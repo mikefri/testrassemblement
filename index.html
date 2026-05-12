@@ -13,18 +13,32 @@
       font-family: Arial, sans-serif;
       background: #f4f6f8;
       padding: 20px;
+      max-width: 600px;
+      margin: auto;
     }
     h1 {
       color: #2c3e50;
     }
-    select, textarea, button {
-      width: 100%;
+    label {
+      font-weight: bold;
       margin-top: 10px;
+      display: block;
+    }
+    input, select, textarea, button {
+      width: 100%;
+      margin-top: 5px;
       padding: 8px;
       font-size: 16px;
     }
     .step {
       margin-bottom: 15px;
+    }
+    button {
+      background: #2c7be5;
+      color: white;
+      border: none;
+      margin-top: 20px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -32,6 +46,20 @@
 <body>
 
 <h1>Déclaration d’anomalie</h1>
+
+<!-- ===== CHAMPS AGENT ===== -->
+<div class="step">
+  <label>Support *</label>
+  <input id="support" placeholder="Ex : Support S45" required />
+
+  <label>Kit *</label>
+  <input id="kit" placeholder="Ex : Kit frein 273" required />
+
+  <label>Engin *</label>
+  <input id="engin" placeholder="Ex : TER X73500" required />
+</div>
+
+<hr>
 
 <div id="form"></div>
 
@@ -63,25 +91,20 @@ const tree = {
       label: "Contenant",
       children: [
         {
-          label: "Support / kit / engin",
+          label: "Logique / Physique",
           children: [
             {
-              label: "Logique / Physique",
+              label: "Type de contenant non adapté",
               children: [
-                {
-                  label: "Type de contenant non adapté",
-                  children: [
-                    { label: "Trop grand" },
-                    { label: "Trop petit" }
-                  ]
-                },
-                {
-                  label: "Contenant HS",
-                  children: [
-                    { label: "Bois" },
-                    { label: "Fer" }
-                  ]
-                }
+                { label: "Trop grand" },
+                { label: "Trop petit" }
+              ]
+            },
+            {
+              label: "Contenant HS",
+              children: [
+                { label: "Bois" },
+                { label: "Fer" }
               ]
             }
           ]
@@ -109,10 +132,9 @@ let selections = [];
 const formDiv = document.getElementById("form");
 
 /* ==========================
-   📐 GÉNÉRATION DYNAMIQUE
+   📐 FORMULAIRE DYNAMIQUE
    ========================== */
 function renderStep(node, level = 0) {
-  // Supprimer les niveaux suivants
   document.querySelectorAll(`[data-level]`).forEach(el => {
     if (parseInt(el.dataset.level) >= level) el.remove();
   });
@@ -124,8 +146,11 @@ function renderStep(node, level = 0) {
   div.className = "step";
   div.dataset.level = level;
 
+  const label = document.createElement("label");
+  label.textContent = node.label;
+
   const select = document.createElement("select");
-  select.innerHTML = `<option value="">-- ${node.label} --</option>`;
+  select.innerHTML = `<option value="">-- Sélectionner --</option>`;
 
   node.children.forEach(child => {
     const opt = document.createElement("option");
@@ -140,31 +165,41 @@ function renderStep(node, level = 0) {
     if (selected) renderStep(selected, level + 1);
   };
 
+  div.appendChild(label);
   div.appendChild(select);
   formDiv.appendChild(div);
 }
 
 /* ==========================
-   📝 COMMENTAIRE FINAL
+   📝 COMMENTAIRE
    ========================== */
-function addComment() {
-  const div = document.createElement("div");
-  div.dataset.level = 999;
-  div.innerHTML = `
-    <textarea id="comment" rows="4" placeholder="Commentaire libre (optionnel)"></textarea>
-  `;
-  formDiv.appendChild(div);
-}
+const commentDiv = document.createElement("div");
+commentDiv.innerHTML = `
+  <label>Commentaire</label>
+  <textarea id="comment" rows="4" placeholder="Commentaire libre (optionnel)"></textarea>
+`;
+formDiv.appendChild(commentDiv);
 
 /* ==========================
-   💾 ENREGISTREMENT FIREBASE
+   💾 ENREGISTREMENT
    ========================== */
 function submitAnomaly() {
-  const comment = document.getElementById("comment")?.value || "";
+  const support = document.getElementById("support").value.trim();
+  const kit = document.getElementById("kit").value.trim();
+  const engin = document.getElementById("engin").value.trim();
+  const commentaire = document.getElementById("comment").value;
+
+  if (!support || !kit || !engin) {
+    alert("❗ Support, Kit et Engin sont obligatoires");
+    return;
+  }
 
   db.collection("anomalies").add({
+    support,
+    kit,
+    engin,
     chemin: selections,
-    commentaire: comment,
+    commentaire,
     date: new Date().toISOString()
   })
   .then(() => {
@@ -176,8 +211,8 @@ function submitAnomaly() {
 
 /* INIT */
 renderStep(tree);
-addComment();
 </script>
 
 </body>
 </html>
+``
