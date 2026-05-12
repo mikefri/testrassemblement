@@ -9,6 +9,7 @@
       "options": [
         { "label": "Contenant", "next": "contenant_fields" },
         { "label": "Flux",      "next": "flux_type"        },
+        { "label": "Logiciel",  "next": "logiciel_type"    }
         
       ]
     },
