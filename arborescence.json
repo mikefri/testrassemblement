@@ -18,8 +18,8 @@
       "tag": "Identification",
       "question": "Identification du matériel concerné",
       "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : Support S45",   "required": true  },
-        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : Kit frein 273", "required": true  },
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........",   "required": true  },
+        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47", "required": true  },
         { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",    "required": true  }
       ],
       "next": "contenant_soustype"
@@ -89,7 +89,7 @@
       "question": "Le contenant peut-il être réparé ?",
       "options": [
         { "label": "Oui",                              "next": "stockage_hs" },
-        { "label": "Non → Valorisation Matière (VM)",  "next": "vm_info"     },
+        { "label": "Non",  "next": "vm_info"     },
         { "label": "Je ne sais pas",                   "next": "commentaire" }
       ]
     },
@@ -108,7 +108,7 @@
       "type": "info",
       "tag": "Action requise",
       "question": "Orientation du contenant",
-      "message": "Le contenant non réparable sera orienté vers la Valorisation Matière (VM).",
+      "message": "Le contenant non réparable sera orienté vers la decheterie",
       "next": "commentaire"
     },
 
@@ -129,8 +129,8 @@
       "tag": "Identification",
       "question": "Identification du matériel concerné",
       "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : Support S45",   "required": true },
-        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : Kit frein 273", "required": true },
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........",   "required": true },
+        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47", "required": true },
         { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",    "required": true }
       ],
       "next": "commentaire"
@@ -150,8 +150,8 @@
       "tag": "Identification – Kit mère",
       "question": "Identification du kit mère concerné",
       "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : Support S45",   "required": true },
-        { "key": "kit",     "label": "Kit mère *", "placeholder": "Ex : Kit frein 273", "required": true },
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........",   "required": true },
+        { "key": "kit",     "label": "Kit mère *", "placeholder": "Ex : K21ME47", "required": true },
         { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",    "required": true }
       ],
       "next": "commentaire"
