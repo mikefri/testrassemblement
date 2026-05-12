@@ -49,6 +49,9 @@
 
 <!-- ===== CHAMPS AGENT ===== -->
 <div class="step">
+  <label>Date de l’anomalie *</label>
+  <input type="date" id="dateAnomalie" required />
+
   <label>Support *</label>
   <input id="support" placeholder="Ex : Support S45" required />
 
@@ -82,7 +85,7 @@ firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 /* ==========================
-   🌳 ARBORESCENCE ANOMALIES
+   🌳 ARBORESCENCE
    ========================== */
 const tree = {
   label: "Type d’anomalie",
@@ -122,97 +125,3 @@ const tree = {
     {
       label: "Logiciel",
       children: [
-        { label: "Déclenchement de mouvement HS" }
-      ]
-    }
-  ]
-};
-
-let selections = [];
-const formDiv = document.getElementById("form");
-
-/* ==========================
-   📐 FORMULAIRE DYNAMIQUE
-   ========================== */
-function renderStep(node, level = 0) {
-  document.querySelectorAll(`[data-level]`).forEach(el => {
-    if (parseInt(el.dataset.level) >= level) el.remove();
-  });
-  selections = selections.slice(0, level);
-
-  if (!node.children) return;
-
-  const div = document.createElement("div");
-  div.className = "step";
-  div.dataset.level = level;
-
-  const label = document.createElement("label");
-  label.textContent = node.label;
-
-  const select = document.createElement("select");
-  select.innerHTML = `<option value="">-- Sélectionner --</option>`;
-
-  node.children.forEach(child => {
-    const opt = document.createElement("option");
-    opt.value = child.label;
-    opt.textContent = child.label;
-    select.appendChild(opt);
-  });
-
-  select.onchange = () => {
-    const selected = node.children.find(c => c.label === select.value);
-    selections[level] = select.value;
-    if (selected) renderStep(selected, level + 1);
-  };
-
-  div.appendChild(label);
-  div.appendChild(select);
-  formDiv.appendChild(div);
-}
-
-/* ==========================
-   📝 COMMENTAIRE
-   ========================== */
-const commentDiv = document.createElement("div");
-commentDiv.innerHTML = `
-  <label>Commentaire</label>
-  <textarea id="comment" rows="4" placeholder="Commentaire libre (optionnel)"></textarea>
-`;
-formDiv.appendChild(commentDiv);
-
-/* ==========================
-   💾 ENREGISTREMENT
-   ========================== */
-function submitAnomaly() {
-  const support = document.getElementById("support").value.trim();
-  const kit = document.getElementById("kit").value.trim();
-  const engin = document.getElementById("engin").value.trim();
-  const commentaire = document.getElementById("comment").value;
-
-  if (!support || !kit || !engin) {
-    alert("❗ Support, Kit et Engin sont obligatoires");
-    return;
-  }
-
-  db.collection("anomalies").add({
-    support,
-    kit,
-    engin,
-    chemin: selections,
-    commentaire,
-    date: new Date().toISOString()
-  })
-  .then(() => {
-    alert("✅ Anomalie enregistrée");
-    location.reload();
-  })
-  .catch(err => alert("❌ Erreur : " + err));
-}
-
-/* INIT */
-renderStep(tree);
-</script>
-
-</body>
-</html>
-``
