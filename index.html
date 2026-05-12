@@ -843,13 +843,13 @@ function reparationStep() {
         }
       },
       {
-        label: "Non → Valorisation Matière (VM)",
+        label: "Non",
         next: {
           id: "vm_info",
           type: "info",
           tag: "Action requise",
           question: "Orientation du contenant",
-          message: "Le contenant non réparable sera orienté vers la Valorisation Matière (VM).",
+          message: "Le contenant non réparable sera orienté vers la décheterie.",
           next: commentStep()
         }
       },
@@ -1164,7 +1164,7 @@ function renderSummary() {
     <div class="success-state" id="success-state">
       <div class="success-icon">✅</div>
       <h2>Anomalie enregistrée !</h2>
-      <p>La déclaration a été sauvegardée avec succès dans Firebase.</p>
+      <p>La déclaration a été sauvegardée avec succès.</p>
       <button class="btn-new" onclick="restart()">+ Nouvelle déclaration</button>
     </div>
   `;
