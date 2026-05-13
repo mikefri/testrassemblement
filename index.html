@@ -4,19 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Déclaration d'anomalie – Rassemblement kit</title>
-  
 
-
-<!-- PWA Meta Tags -->
-<link rel="manifest" href="./manifest.json">
-<meta name="theme-color" content="#e8600a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Anomalies Kit">
-<link rel="apple-touch-icon" href="./icons/icon-152x152.png">
-<link rel="icon" type="image/x-icon" href="./icons/favicon.ico">
-
-  
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#e8600a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Anomalies Kit">
+  <link rel="apple-touch-icon" href="./icons/icon-152x152.png">
+  <link rel="icon" type="image/x-icon" href="./icons/favicon.ico">
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -83,17 +79,16 @@
       margin: 0 auto 20px;
     }
 
-
     .version-badge {
-  font-size: 10px;
-  font-weight: 600;
-  background: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.7);
-  padding: 2px 7px;
-  border-radius: 100px;
-  vertical-align: middle;
-  letter-spacing: 0.03em;
-}
+      font-size: 10px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.7);
+      padding: 2px 7px;
+      border-radius: 100px;
+      vertical-align: middle;
+      letter-spacing: 0.03em;
+    }
 
     .login-card h1 {
       text-align: center;
@@ -125,7 +120,7 @@
       padding: 13px 15px;
       border: 1.5px solid var(--border);
       border-radius: 10px;
-      font-size: 16px; /* 16px = pas de zoom auto iOS */
+      font-size: 16px;
       color: #111827;
       background: var(--bg);
       outline: none;
@@ -246,7 +241,6 @@
     }
     .btn-header:hover { background: rgba(255,255,255,0.22); }
 
-    /* Chip utilisateur */
     .user-chip {
       background: rgba(255,255,255,0.10);
       border: 1px solid rgba(255,255,255,0.18);
@@ -337,7 +331,7 @@
     .field textarea {
       width: 100%; padding: 12px 14px;
       border: 1.5px solid var(--border); border-radius: 9px;
-      font-size: 16px; /* 16px = pas de zoom auto iOS */
+      font-size: 16px;
       color: #111827; background: var(--bg);
       outline: none; transition: border-color .15s, background .15s;
       font-family: var(--font);
@@ -427,62 +421,36 @@
        RESPONSIVE — MOBILE  (≤ 480px)
     ══════════════════════════════════════════ */
     @media (max-width: 480px) {
-      /* Header compact */
       header { padding: 10px 12px; gap: 10px; }
       header p { display: none; }
       header h1 { font-size: 14px; }
-
-      /* Chip : avatar seul, e-mail masqué */
       .user-chip { padding: 5px; max-width: none; border-radius: 50%; width: 32px; height: 32px; justify-content: center; }
       .user-email { display: none; }
-
-      /* Boutons header plus compacts */
       .btn-header { padding: 6px 9px; font-size: 11px; }
-
-      /* Login card */
       .login-card { padding: 24px 18px 20px; border-radius: 16px; }
       .login-card h1 { font-size: 18px; }
-
-      /* Container */
       .container { padding: 14px 10px 72px; }
-
-      /* Card */
       .card { padding: 16px 14px; border-radius: 12px; }
       .step-question { font-size: 16px; }
-
-      /* Options : boutons plus grands pour le touch */
       .opt-btn { font-size: 14px; padding: 15px 14px; border-radius: 10px; }
-
-      /* Navigation : bouton Retour en bas, Suivant en premier */
       .btn-row { flex-direction: column; gap: 8px; }
       .btn-back { order: 2; text-align: center; }
       .btn-next { order: 1; padding: 15px; }
-
-      /* Récapitulatif : clé et valeur en colonne */
       .summary-row { flex-direction: column; gap: 2px; padding: 10px 14px; }
       .s-key { min-width: unset; font-size: 11px; }
       .s-val { font-size: 14px; }
-
-      /* Bouton enregistrer full width */
       .btn-submit-main { font-size: 16px; }
     }
 
-    /* ══════════════════════════════════════════
-       RESPONSIVE — TABLETTE  (481px – 768px)
-    ══════════════════════════════════════════ */
     @media (min-width: 481px) and (max-width: 768px) {
       .user-chip { max-width: 130px; }
       header h1 { font-size: 15px; }
       .login-card { padding: 32px 28px 28px; }
       .step-question { font-size: 17px; }
       .container { padding: 18px 16px 60px; }
-      /* Navigation tablette : en ligne */
       .btn-row { flex-direction: row; }
     }
 
-    /* ══════════════════════════════════════════
-       RESPONSIVE — DESKTOP  (> 768px)
-    ══════════════════════════════════════════ */
     @media (min-width: 769px) {
       header { padding: 14px 24px; gap: 14px; }
       header h1 { font-size: 17px; }
@@ -493,8 +461,6 @@
       .step-question { font-size: 19px; }
       .opt-btn { font-size: 16px; padding: 15px 18px; }
       .btn-row { flex-direction: row; }
-      .btn-back { order: unset; }
-      .btn-next { order: unset; }
     }
   </style>
 </head>
@@ -522,24 +488,23 @@
 
 <!-- APP PRINCIPALE -->
 <div id="app-view">
-<header>
-  <div class="logo">
-    <img src="./icons/icon-32x32.png" alt="Logo" style="width:24px; height:24px;">
-  </div>
-  <div class="header-titles">
-  <h1>Déclaration d'anomalie</h1>
-  <p>Rassemblement de kit <span class="version-badge">v1.0</span></p>
-</div>
-
-  <div class="header-right">
-    <div class="user-chip" id="user-chip" title="Utilisateur connecté">
-      <div class="user-avatar" id="user-avatar">?</div>
-      <span class="user-email" id="user-email-display">—</span>
+  <header>
+    <div class="logo">
+      <img src="./icons/icon-32x32.png" alt="Logo" style="width:24px; height:24px;">
     </div>
-    <button class="btn-header" onclick="toggleHistory()">📋 Historique</button>
-    <button class="btn-header" onclick="doLogout()" title="Se déconnecter">🔓 Déco.</button>
-  </div>
-</header>
+    <div class="header-titles">
+      <h1>Déclaration d'anomalie</h1>
+      <p>Rassemblement de kit <span class="version-badge">v1.0</span></p>
+    </div>
+    <div class="header-right">
+      <div class="user-chip" id="user-chip" title="Utilisateur connecté">
+        <div class="user-avatar" id="user-avatar">?</div>
+        <span class="user-email" id="user-email-display">—</span>
+      </div>
+      <button class="btn-header" onclick="toggleHistory()">📋 Historique</button>
+      <button class="btn-header" onclick="doLogout()" title="Se déconnecter">🔓 Déco.</button>
+    </div>
+  </header>
 
   <div class="container">
     <div id="form-view">
@@ -565,6 +530,190 @@
 </div>
 
 <script>
+/* ════════════════════════════════════════════════════════════
+   ARBORESCENCE — à modifier ici pour faire évoluer l'appli
+   ════════════════════════════════════════════════════════════
+   Chaque nœud a un identifiant unique (clé dans "nodes").
+   Le champ "next" d'un nœud (ou d'une option) est simplement
+   l'identifiant du nœud suivant. null = fin de parcours → récap.
+   ════════════════════════════════════════════════════════════ */
+const TREE = {
+  "start": "root",
+  "nodes": {
+
+    "root": {
+      "type": "select",
+      "tag": "Catégorie",
+      "question": "Quel type d'anomalie souhaitez-vous déclarer ?",
+      "options": [
+        { "label": "Contenant", "next": "contenant_fields" },
+        { "label": "Flux",      "next": "flux_type"        },
+        { "label": "Logiciel",  "next": "logiciel_type"    }
+      ]
+    },
+
+    "contenant_fields": {
+      "type": "fields",
+      "tag": "Identification",
+      "question": "Identification du matériel concerné",
+      "fields": [
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
+        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47",          "required": true },
+        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
+      ],
+      "next": "contenant_soustype"
+    },
+
+    "contenant_soustype": {
+      "type": "select",
+      "tag": "Contenant – Sous-catégorie",
+      "question": "Nature du problème contenant ?",
+      "options": [
+        { "label": "Logique / Physique", "next": "logphys_type" },
+        { "label": "Physique",           "next": "phys_type"    }
+      ]
+    },
+
+    "logphys_type": {
+      "type": "select",
+      "tag": "Contenant – Logique / Physique",
+      "question": "Type de problème logique/physique ?",
+      "options": [
+        { "label": "Type de contenant non adapté", "next": "taille" }
+      ]
+    },
+
+    "taille": {
+      "type": "select",
+      "tag": "Taille",
+      "question": "Le contenant est-il…",
+      "options": [
+        { "label": "Trop grand", "next": "preco" },
+        { "label": "Trop petit", "next": "preco" }
+      ]
+    },
+
+    "preco": {
+      "type": "text",
+      "tag": "Préconisation",
+      "question": "Quelle est la préconisation ?",
+      "field": "preco",
+      "placeholder": "Ex : Remplacer par modèle B-23",
+      "required": false,
+      "next": "commentaire"
+    },
+
+    "phys_type": {
+      "type": "select",
+      "tag": "Contenant – Physique",
+      "question": "Type de problème physique ?",
+      "options": [
+        { "label": "Contenant HS", "next": "matiere" }
+      ]
+    },
+
+    "matiere": {
+      "type": "select",
+      "tag": "Matière",
+      "question": "Matière du contenant HS ?",
+      "options": [
+        { "label": "Bois", "next": "reparation" },
+        { "label": "Fer",  "next": "reparation" }
+      ]
+    },
+
+    "reparation": {
+      "type": "select",
+      "tag": "Réparation",
+      "question": "Le contenant peut-il être réparé ?",
+      "options": [
+        { "label": "Oui",              "next": "stockage_hs" },
+        { "label": "Non",              "next": "vm_info"     },
+        { "label": "Je ne sais pas",   "next": "commentaire" }
+      ]
+    },
+
+    "stockage_hs": {
+      "type": "text",
+      "tag": "Stockage HS",
+      "question": "Emplacement de stockage HS ?",
+      "field": "stockage_hs",
+      "placeholder": "Ex : Zone HS – Allée 3, étagère B",
+      "required": true,
+      "next": "commentaire"
+    },
+
+    "vm_info": {
+      "type": "info",
+      "tag": "Action requise",
+      "question": "Orientation du contenant",
+      "message": "Le contenant non réparable sera orienté vers la décheterie.",
+      "next": "commentaire"
+    },
+
+    "flux_type": {
+      "type": "select",
+      "tag": "Flux",
+      "question": "Type de problème flux ?",
+      "options": [
+        { "label": "Appro manquant",              "next": "fields_default" },
+        { "label": "Pièce dep manquante",         "next": "fields_default" },
+        { "label": "Blocage en entrée MAG2EPRE",  "next": "fields_default" },
+        { "label": "Blocage en sortie MAG2SPRE",  "next": "fields_default" }
+      ]
+    },
+
+    "fields_default": {
+      "type": "fields",
+      "tag": "Identification",
+      "question": "Identification du matériel concerné",
+      "fields": [
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
+        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47",          "required": true },
+        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
+      ],
+      "next": "commentaire"
+    },
+
+    "logiciel_type": {
+      "type": "select",
+      "tag": "Logiciel",
+      "question": "Type de problème logiciel ?",
+      "options": [
+        { "label": "Déclenchement de mouvement HS", "next": "fields_kit_mere" }
+      ]
+    },
+
+    "fields_kit_mere": {
+      "type": "fields",
+      "tag": "Identification – Kit mère",
+      "question": "Identification du kit mère concerné",
+      "fields": [
+        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
+        { "key": "kit",     "label": "Kit mère *", "placeholder": "Ex : Kit frein 273",    "required": true },
+        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
+      ],
+      "next": "commentaire"
+    },
+
+    "commentaire": {
+      "type": "textarea",
+      "tag": "Étape finale",
+      "question": "Un commentaire à ajouter ?",
+      "field": "commentaire",
+      "placeholder": "Description complémentaire, référence, contexte… (optionnel)",
+      "required": false,
+      "next": null
+    }
+
+  }
+};
+
+/* ════════════════════════════════════════════════════════════
+   MOTEUR GÉNÉRIQUE — ne pas modifier sauf pour ajouter
+   un nouveau type de nœud
+   ════════════════════════════════════════════════════════════ */
+
 /* ── Firebase ── */
 const firebaseConfig = {
   apiKey: "AIzaSyARI0sADSyvYcTwaSlK0TpvLY0uwL2BlRw",
@@ -599,11 +748,11 @@ async function doLogin() {
   } catch(err) {
     btn.disabled = false; btn.innerHTML = "Se connecter";
     const msgs = {
-      "auth/user-not-found":"Aucun compte trouvé pour cet e-mail.",
-      "auth/wrong-password":"Mot de passe incorrect.",
-      "auth/invalid-email":"Adresse e-mail invalide.",
-      "auth/too-many-requests":"Trop de tentatives. Réessayez dans quelques minutes.",
-      "auth/invalid-credential":"Identifiants incorrects. Vérifiez votre e-mail et mot de passe.",
+      "auth/user-not-found":       "Aucun compte trouvé pour cet e-mail.",
+      "auth/wrong-password":       "Mot de passe incorrect.",
+      "auth/invalid-email":        "Adresse e-mail invalide.",
+      "auth/too-many-requests":    "Trop de tentatives. Réessayez dans quelques minutes.",
+      "auth/invalid-credential":   "Identifiants incorrects. Vérifiez votre e-mail et mot de passe.",
       "auth/network-request-failed":"Erreur réseau. Vérifiez votre connexion."
     };
     showLoginError(msgs[err.code] || "Erreur : " + err.message);
@@ -630,7 +779,7 @@ function showApp(user) {
   document.getElementById("login-view").style.display = "none";
   document.getElementById("app-view").style.display   = "block";
   const email = user.email || "";
-  document.getElementById("user-avatar").textContent       = email.charAt(0).toUpperCase();
+  document.getElementById("user-avatar").textContent        = email.charAt(0).toUpperCase();
   document.getElementById("user-email-display").textContent = email;
   restart();
 }
@@ -638,173 +787,208 @@ document.addEventListener("keydown", e => {
   if (e.key === "Enter" && document.getElementById("login-view").style.display !== "none") doLogin();
 });
 
-/* ── Arborescence ── */
-const commentStep = () => ({
-  id:"commentaire", type:"textarea", tag:"Étape finale",
-  question:"Un commentaire à ajouter ?", field:"commentaire",
-  placeholder:"Description complémentaire, référence, contexte… (optionnel)",
-  required:false, next:null
-});
-const fieldsStep = (lib, fields, nextFn) => ({ id:"fields_"+lib, type:"fields", tag:"Identification", question:lib, fields, next:nextFn });
+/* ── État de navigation ── */
+// currentStepId : identifiant (string) du nœud actif dans TREE.nodes
+// stepHistory   : pile pour le bouton Retour
+// collected     : valeurs saisies par l'utilisateur
+// breadcrumb    : libellés des choix effectués (affiché en haut)
+let currentStepId = TREE.start;
+let stepHistory   = [];
+let collected     = {};
+let breadcrumb    = [];
 
-const FD = [
-  { key:"support", label:"Support *",  placeholder:"Ex : 052000......", required:true },
-  { key:"kit",     label:"Kit *",      placeholder:"Ex : K21ME47",      required:true },
-  { key:"engin",   label:"Engin *",    placeholder:"Ex : TER X73500",   required:true }
-];
-const FK = [
-  { key:"support", label:"Support *",  placeholder:"Ex : 052000......",  required:true },
-  { key:"kit",     label:"Kit mère *", placeholder:"Ex : Kit frein 273", required:true },
-  { key:"engin",   label:"Engin *",    placeholder:"Ex : TER X73500",    required:true }
-];
+const ESTIMATED_MAX = 9; // pour la barre de progression
 
-const logicielTree = {
-  id:"logiciel_type", type:"select", tag:"Logiciel",
-  question:"Type de problème logiciel ?",
-  options:[{ label:"Déclenchement de mouvement HS", next:fieldsStep("Identification du kit mère concerné", FK, () => commentStep()) }]
-};
-const fluxTree = {
-  id:"flux_type", type:"select", tag:"Flux",
-  question:"Type de problème flux ?",
-  options:[
-    { label:"Appro manquant",               next:fieldsStep("Identification du matériel concerné", FD, () => commentStep()) },
-    { label:"Pièce dep manquante",           next:fieldsStep("Identification du matériel concerné", FD, () => commentStep()) },
-    { label:"Blocage en entrée – MAG2EPRE", next:fieldsStep("Identification du matériel concerné", FD, () => commentStep()) },
-    { label:"Blocage en sortie – MAG2SPRE", next:fieldsStep("Identification du matériel concerné", FD, () => commentStep()) }
-  ]
-};
-const reparationStep = () => ({
-  id:"reparation", type:"select", tag:"Réparation",
-  question:"Le contenant peut-il être réparé ?",
-  options:[
-    { label:"Oui",
-      next:{ id:"stockage_hs", type:"text", tag:"Stockage HS", question:"Emplacement de stockage HS ?", field:"stockage_hs", placeholder:"Ex : Zone HS – Allée 3, étagère B", required:true, next:commentStep() }},
-    { label:"Non",
-      next:{ id:"vm_info", type:"info", tag:"Action requise", question:"Orientation du contenant", message:"Le contenant non réparable sera orienté vers la décheterie.", next:commentStep() }},
-    { label:"Je ne sais pas", next:commentStep() }
-  ]
-});
-const physTree = {
-  id:"phys_type", type:"select", tag:"Contenant – Physique",
-  question:"Type de problème physique ?",
-  options:[{ label:"Contenant HS", next:{ id:"matiere", type:"select", tag:"Matière", question:"Matière du contenant HS ?", options:[{ label:"Bois", next:reparationStep() },{ label:"Fer", next:reparationStep() }] }}]
-};
-const logPhysTree = {
-  id:"logphys_type", type:"select", tag:"Contenant – Logique / Physique",
-  question:"Type de problème logique/physique ?",
-  options:[{ label:"Type de contenant non adapté", next:{
-    id:"taille", type:"select", tag:"Taille", question:"Le contenant est-il…",
-    options:[
-      { label:"Trop grand", next:{ id:"preco", type:"text", tag:"Préconisation", question:"Quelle est la préconisation ?", field:"preco", placeholder:"Ex : Remplacer par modèle B-23", required:false, next:commentStep() }},
-      { label:"Trop petit", next:{ id:"preco", type:"text", tag:"Préconisation", question:"Quelle est la préconisation ?", field:"preco", placeholder:"Ex : Remplacer par modèle B-23", required:false, next:commentStep() }}
-    ]
-  }}]
-};
-const contenantTree = fieldsStep("Identification du matériel concerné", FD, () => ({
-  id:"contenant_soustype", type:"select", tag:"Contenant – Sous-catégorie",
-  question:"Nature du problème contenant ?",
-  options:[{ label:"Logique / Physique", next:logPhysTree },{ label:"Physique", next:physTree }]
-}));
-const ROOT = {
-  id:"root", type:"select", tag:"Catégorie",
-  question:"Quel type d'anomalie souhaitez-vous déclarer ?",
-  options:[{ label:"Contenant", next:contenantTree },{ label:"Flux", next:fluxTree },{ label:"Logiciel", next:logicielTree }]
-};
-
-/* ── State ── */
-let stepHistory = [], currentStep = ROOT, collected = {}, breadcrumb = [];
-const ESTIMATED_MAX = 9;
-
-/* ── Rendu ── */
+/* ── Rendu principal ── */
 function render() {
-  const step = currentStep;
+  const step = TREE.nodes[currentStepId];
+
+  // Barre de progression
   const pct = Math.min(Math.round((stepHistory.length / ESTIMATED_MAX) * 100), 95);
-  document.getElementById("progress-bar").style.width  = pct + "%";
-  document.getElementById("progress-label").textContent = "Étape " + (stepHistory.length + 1);
-  document.getElementById("breadcrumb").innerHTML = breadcrumb.map((b,i) =>
-    (i > 0 ? '<span class="bc-sep">›</span>' : '') + `<span class="bc-item">${b}</span>`
+  document.getElementById("progress-bar").style.width    = pct + "%";
+  document.getElementById("progress-label").textContent  = "Étape " + (stepHistory.length + 1);
+
+  // Fil d'Ariane
+  document.getElementById("breadcrumb").innerHTML = breadcrumb.map((b, i) =>
+    (i > 0 ? '<span class="bc-sep">›</span>' : '') +
+    `<span class="bc-item">${b}</span>`
   ).join("");
 
-  let inner = `<div class="step-tag">${step.tag||""}</div><div class="step-question">${step.question}</div>`;
+  // Corps de l'étape
+  let inner = `<div class="step-tag">${step.tag || ""}</div>
+               <div class="step-question">${step.question}</div>`;
 
   if (step.type === "select") {
-    inner += `<div class="options">${step.options.map((o,i) =>
-      `<button class="opt-btn" onclick="pickOption(${i})"><span>${o.label}</span><span class="chevron">›</span></button>`
-    ).join("")}</div>`;
+    // ── Liste de boutons-options ──
+    inner += `<div class="options">${
+      step.options.map((o, i) =>
+        `<button class="opt-btn" onclick="pickOption(${i})">
+           <span>${o.label}</span>
+           <span class="chevron">›</span>
+         </button>`
+      ).join("")
+    }</div>`;
+
   } else if (step.type === "fields") {
-    inner += `<div class="fields">${step.fields.map(f =>
-      `<div class="field"><label>${f.label}</label>
-       <input id="f_${f.key}" placeholder="${f.placeholder}" value="${esc(collected[f.key]||"")}" /></div>`
-    ).join("")}</div>` + navButtons("submitFields()");
+    // ── Plusieurs champs texte ──
+    inner += `<div class="fields">${
+      step.fields.map(f =>
+        `<div class="field">
+           <label>${f.label}</label>
+           <input id="f_${f.key}" placeholder="${f.placeholder}"
+                  value="${esc(collected[f.key] || "")}" />
+         </div>`
+      ).join("")
+    }</div>` + navButtons("submitFields()");
+
   } else if (step.type === "text") {
+    // ── Un seul champ texte ──
     inner += `<div class="fields"><div class="field">
-      <input id="txt_field" placeholder="${step.placeholder}" value="${esc(collected[step.field]||"")}" />
+      <input id="txt_field" placeholder="${step.placeholder}"
+             value="${esc(collected[step.field] || "")}" />
     </div></div>` + navButtons("submitText()");
+
   } else if (step.type === "textarea") {
+    // ── Zone de texte libre (commentaire / dernière étape) ──
+    const isLast  = step.next === null;
+    const btnLabel = isLast ? "📋 Voir le récapitulatif" : "Suivant →";
     inner += `<div class="fields"><div class="field">
-      <textarea id="ta_field" placeholder="${step.placeholder}">${esc(collected[step.field||"commentaire"]||"")}</textarea>
-    </div></div>` + navButtons("submitTextarea()", step.next === null ? "📋 Voir le récapitulatif" : "Suivant →");
+      <textarea id="ta_field" placeholder="${step.placeholder}">${
+        esc(collected[step.field || "commentaire"] || "")
+      }</textarea>
+    </div></div>` + navButtons("submitTextarea()", btnLabel);
+
   } else if (step.type === "info") {
-    inner += `<div class="info-banner">${step.message}</div>` + navButtons("advanceStep()");
+    // ── Bannière d'information (pas de saisie) ──
+    inner += `<div class="info-banner">${step.message}</div>` +
+             navButtons("advanceStep()");
   }
-  document.getElementById("step-container").innerHTML = `<div class="card">${inner}</div>`;
+
+  document.getElementById("step-container").innerHTML =
+    `<div class="card">${inner}</div>`;
 }
 
+/* Génère les boutons Retour / Suivant */
 function navButtons(onNext, nextLabel = "Suivant →") {
-  const back = stepHistory.length > 0 ? `<button class="btn btn-back" onclick="goBack()">← Retour</button>` : "";
-  return `<div class="btn-row">${back}<button class="btn btn-next" onclick="${onNext}">${nextLabel}</button></div>`;
+  const back = stepHistory.length > 0
+    ? `<button class="btn btn-back" onclick="goBack()">← Retour</button>`
+    : "";
+  return `<div class="btn-row">
+    ${back}
+    <button class="btn btn-next" onclick="${onNext}">${nextLabel}</button>
+  </div>`;
 }
-function esc(s) { return String(s).replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+function esc(s) {
+  return String(s).replace(/"/g, "&quot;").replace(/</g, "&lt;");
+}
 
 /* ── Navigation ── */
+
+// L'utilisateur clique sur une option d'un nœud "select"
 function pickOption(i) {
-  const opt = currentStep.options[i]; pushHistory();
-  breadcrumb.push(opt.label); collected["n" + stepHistory.length] = opt.label;
-  currentStep = typeof opt.next === "function" ? opt.next() : opt.next; render();
+  const step = TREE.nodes[currentStepId];
+  const opt  = step.options[i];
+  pushHistory();
+  breadcrumb.push(opt.label);
+  // On mémorise le choix sous la clé "nX" (pour le récapitulatif)
+  collected["n" + stepHistory.length] = opt.label;
+  currentStepId = opt.next;
+  render();
 }
+
+// Valider un nœud "fields" (plusieurs champs)
 function submitFields() {
+  const step = TREE.nodes[currentStepId];
   let ok = true;
-  currentStep.fields.forEach(f => {
-    const el = document.getElementById("f_" + f.key), val = el.value.trim();
+  step.fields.forEach(f => {
+    const el  = document.getElementById("f_" + f.key);
+    const val = el.value.trim();
     if (f.required && !val) { el.classList.add("error"); ok = false; }
     else { el.classList.remove("error"); collected[f.key] = val; }
   });
   if (!ok) { alert("❗ Veuillez remplir tous les champs obligatoires (*)"); return; }
-  const next = typeof currentStep.next === "function" ? currentStep.next() : currentStep.next;
-  pushHistory(); currentStep = next; render();
-}
-function submitText() {
-  const val = document.getElementById("txt_field").value.trim();
-  if (currentStep.required && !val) { alert("❗ Ce champ est obligatoire."); return; }
-  collected[currentStep.field] = val;
-  const next = typeof currentStep.next === "function" ? currentStep.next() : currentStep.next;
-  pushHistory(); currentStep = next; render();
-}
-function submitTextarea() {
-  collected[currentStep.field || "commentaire"] = document.getElementById("ta_field").value.trim();
-  const next = typeof currentStep.next === "function" ? currentStep.next() : currentStep.next;
   pushHistory();
-  if (next === null) renderSummary(); else { currentStep = next; render(); }
-}
-function advanceStep() {
-  const next = typeof currentStep.next === "function" ? currentStep.next() : currentStep.next;
-  pushHistory(); currentStep = next; render();
-}
-function goBack() {
-  if (!stepHistory.length) return;
-  const p = stepHistory.pop(); currentStep = p.step; collected = p.collected; breadcrumb = p.breadcrumb; render();
-}
-function pushHistory() {
-  stepHistory.push({ step:currentStep, collected:JSON.parse(JSON.stringify(collected)), breadcrumb:[...breadcrumb] });
+  currentStepId = step.next;
+  render();
 }
 
-/* ── Résumé ── */
-const LABEL_MAP = { support:"Support", kit:"Kit", engin:"Engin", commentaire:"Commentaire", preco:"Préconisation", stockage_hs:"Emplacement HS" };
+// Valider un nœud "text" (un seul champ)
+function submitText() {
+  const step = TREE.nodes[currentStepId];
+  const val  = document.getElementById("txt_field").value.trim();
+  if (step.required && !val) { alert("❗ Ce champ est obligatoire."); return; }
+  collected[step.field] = val;
+  pushHistory();
+  currentStepId = step.next;
+  render();
+}
+
+// Valider un nœud "textarea" (commentaire)
+function submitTextarea() {
+  const step = TREE.nodes[currentStepId];
+  collected[step.field || "commentaire"] = document.getElementById("ta_field").value.trim();
+  pushHistory();
+  if (step.next === null) {
+    renderSummary(); // fin de parcours → récapitulatif
+  } else {
+    currentStepId = step.next;
+    render();
+  }
+}
+
+// Avancer depuis un nœud "info" (pas de saisie)
+function advanceStep() {
+  const step = TREE.nodes[currentStepId];
+  pushHistory();
+  currentStepId = step.next;
+  render();
+}
+
+// Retour à l'étape précédente
+function goBack() {
+  if (!stepHistory.length) return;
+  const prev    = stepHistory.pop();
+  currentStepId = prev.stepId;
+  collected     = prev.collected;
+  breadcrumb    = prev.breadcrumb;
+  render();
+}
+
+// Empile l'état courant avant de changer d'étape
+function pushHistory() {
+  stepHistory.push({
+    stepId:     currentStepId,
+    collected:  JSON.parse(JSON.stringify(collected)),
+    breadcrumb: [...breadcrumb]
+  });
+}
+
+/* ── Récapitulatif ── */
+const LABEL_MAP = {
+  support:    "Support",
+  kit:        "Kit",
+  engin:      "Engin",
+  commentaire:"Commentaire",
+  preco:      "Préconisation",
+  stockage_hs:"Emplacement HS"
+};
+
 function renderSummary() {
-  document.getElementById("progress-bar").style.width = "100%";
-  document.getElementById("progress-label").textContent = "Récapitulatif";
-  const path = []; for (let i=1;;i++) { if (collected["n"+i]) path.push(collected["n"+i]); else break; }
-  const extras = Object.entries(collected).filter(([k]) => !k.startsWith("n")).map(([k,v]) => ({ key:LABEL_MAP[k]||k, val:v||"—" }));
+  document.getElementById("progress-bar").style.width    = "100%";
+  document.getElementById("progress-label").textContent  = "Récapitulatif";
+
+  // Chemin de décision : toutes les clés "nX"
+  const path = [];
+  for (let i = 1; ; i++) {
+    if (collected["n" + i]) path.push(collected["n" + i]); else break;
+  }
+
+  // Données saisies : tout sauf les clés "nX"
+  const extras = Object.entries(collected)
+    .filter(([k]) => !k.startsWith("n"))
+    .map(([k, v]) => ({ key: LABEL_MAP[k] || k, val: v || "—" }));
+
   document.getElementById("step-container").innerHTML = `
     <div class="card" style="margin-bottom:14px">
       <div class="step-tag">Récapitulatif</div>
@@ -812,15 +996,27 @@ function renderSummary() {
     </div>
     <div class="summary-table">
       <div class="summary-header">📋 Chemin d'anomalie</div>
-      ${path.map((p,i) => `<div class="summary-row"><span class="s-key">Niveau ${i+1}</span><span class="s-val">${p}</span></div>`).join("")}
+      ${path.map((p, i) =>
+        `<div class="summary-row">
+           <span class="s-key">Niveau ${i + 1}</span>
+           <span class="s-val">${p}</span>
+         </div>`
+      ).join("")}
     </div>
-    ${extras.length ? `<div class="summary-table">
+    ${extras.length ? `
+    <div class="summary-table">
       <div class="summary-header">📝 Données saisies</div>
-      ${extras.map(e => `<div class="summary-row"><span class="s-key">${e.key}</span><span class="s-val">${e.val}</span></div>`).join("")}
+      ${extras.map(e =>
+        `<div class="summary-row">
+           <span class="s-key">${e.key}</span>
+           <span class="s-val">${e.val}</span>
+         </div>`
+      ).join("")}
     </div>` : ""}
     <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
       <button class="btn btn-back" style="flex:0 0 auto" onclick="restart()">↺ Recommencer</button>
-      <button class="btn-submit-main" id="save-btn" onclick="saveAnomaly()" style="flex:1; min-width:180px">✅ Enregistrer l'anomalie</button>
+      <button class="btn-submit-main" id="save-btn" onclick="saveAnomaly()"
+              style="flex:1; min-width:180px">✅ Enregistrer l'anomalie</button>
     </div>
     <div class="success-state" id="success-state">
       <div class="success-icon">✅</div>
@@ -830,25 +1026,40 @@ function renderSummary() {
     </div>`;
 }
 
-/* ── Enregistrement ── */
+/* ── Enregistrement Firebase ── */
 async function saveAnomaly() {
   const btn = document.getElementById("save-btn");
   btn.disabled = true;
-  btn.innerHTML = '<span class="spinner" style="border-top-color:#fff;border-color:#fff4;width:18px;height:18px;display:inline-block;vertical-align:middle;margin-right:8px;border-radius:50%;animation:spin .7s linear infinite;border-width:2.5px;flex-shrink:0"></span>Enregistrement…';
-  const path = []; for (let i=1;;i++) { if (collected["n"+i]) path.push(collected["n"+i]); else break; }
+  btn.innerHTML = `<span class="spinner" style="
+    border-top-color:#fff; border-color:#fff4; width:18px; height:18px;
+    display:inline-block; vertical-align:middle; margin-right:8px;
+    border-radius:50%; animation:spin .7s linear infinite;
+    border-width:2.5px; flex-shrink:0"></span>Enregistrement…`;
+
+  const path = [];
+  for (let i = 1; ; i++) { if (collected["n" + i]) path.push(collected["n" + i]); else break; }
+
   const user = auth.currentUser;
   try {
     await db.collection("anomalies").add({
-      chemin:path, categorie:path[0]||"",
-      support:collected.support||"", kit:collected.kit||"", engin:collected.engin||"",
-      commentaire:collected.commentaire||"", preco:collected.preco||"", stockage_hs:collected.stockage_hs||"",
-      date:new Date().toISOString(), ts:firebase.firestore.FieldValue.serverTimestamp(),
-      declarant_uid:user?.uid||"", declarant_email:user?.email||""
+      chemin:         path,
+      categorie:      path[0] || "",
+      support:        collected.support     || "",
+      kit:            collected.kit         || "",
+      engin:          collected.engin       || "",
+      commentaire:    collected.commentaire || "",
+      preco:          collected.preco       || "",
+      stockage_hs:    collected.stockage_hs || "",
+      date:           new Date().toISOString(),
+      ts:             firebase.firestore.FieldValue.serverTimestamp(),
+      declarant_uid:  user?.uid   || "",
+      declarant_email:user?.email || ""
     });
     document.getElementById("success-state").classList.add("show");
     btn.style.display = "none";
   } catch(err) {
-    btn.disabled = false; btn.innerHTML = "✅ Enregistrer l'anomalie";
+    btn.disabled = false;
+    btn.innerHTML = "✅ Enregistrer l'anomalie";
     alert("❌ Erreur Firebase :\n" + err.message);
   }
 }
@@ -866,18 +1077,21 @@ async function loadHistory() {
   list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Chargement…</p>";
   try {
     const snap = await db.collection("anomalies").orderBy("ts","desc").limit(50).get();
-    if (snap.empty) { list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Aucune anomalie déclarée.</p>"; return; }
+    if (snap.empty) {
+      list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Aucune anomalie déclarée.</p>";
+      return;
+    }
     list.innerHTML = snap.docs.map(doc => {
-      const d = doc.data();
+      const d  = doc.data();
       const dt = d.date ? new Date(d.date).toLocaleString("fr-FR") : "—";
-      const infos = [d.support,d.kit,d.engin].filter(Boolean).join(" · ");
-      const dec = d.declarant_email ? `<span style="opacity:.7">· ${d.declarant_email}</span>` : "";
+      const infos = [d.support, d.kit, d.engin].filter(Boolean).join(" · ");
+      const dec   = d.declarant_email ? `<span style="opacity:.7">· ${d.declarant_email}</span>` : "";
       return `<div class="history-item">
         <div class="history-item-top">
-          <span class="hist-badge">${d.categorie||"—"}</span>
+          <span class="hist-badge">${d.categorie || "—"}</span>
           <span class="hist-date">${dt} ${dec}</span>
         </div>
-        <div class="hist-path">${(d.chemin||[]).join(" › ")}</div>
+        <div class="hist-path">${(d.chemin || []).join(" › ")}</div>
         ${infos ? `<div class="hist-fields">${infos}</div>` : ""}
         ${d.commentaire ? `<div class="hist-fields" style="margin-top:4px;font-style:italic">"${d.commentaire}"</div>` : ""}
       </div>`;
@@ -887,16 +1101,20 @@ async function loadHistory() {
   }
 }
 
-/* ── Reset ── */
+/* ── Réinitialisation ── */
 function restart() {
-  stepHistory=[]; currentStep=ROOT; collected={}; breadcrumb=[]; historyVisible=false;
+  currentStepId  = TREE.start;
+  stepHistory    = [];
+  collected      = {};
+  breadcrumb     = [];
+  historyVisible = false;
   document.getElementById("form-view").style.display = "block";
   document.getElementById("history-view").classList.remove("show");
   render();
 }
 </script>
-  <script>
-  // Enregistrement du Service Worker
+
+<script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
