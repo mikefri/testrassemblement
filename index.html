@@ -526,6 +526,137 @@
     }
     .btn-delete:hover { background: #fef2f2; }
 
+    /* ══════════════════════════════════════════
+       PHOTOS
+    ══════════════════════════════════════════ */
+
+    /* Zone de dépôt / ajout */
+    .photo-zone {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      text-align: center;
+      background: var(--bg);
+      transition: border-color .2s, background .2s;
+      cursor: pointer;
+      margin-bottom: 12px;
+    }
+    .photo-zone:hover { border-color: var(--accent); background: var(--accent-lt); }
+    .photo-zone-icon { font-size: 28px; margin-bottom: 6px; }
+    .photo-zone-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+    .photo-zone-sub   { font-size: 11px; color: var(--muted); margin-top: 3px; opacity: .7; }
+
+    /* Grille de vignettes */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .photo-thumb-wrap {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      animation: slide-up .2s ease;
+    }
+    .photo-thumb-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      cursor: pointer;
+      transition: transform .2s;
+    }
+    .photo-thumb-wrap img:hover { transform: scale(1.05); }
+    .photo-thumb-del {
+      position: absolute; top: 4px; right: 4px;
+      background: rgba(220,38,38,0.85);
+      color: #fff; border: none;
+      width: 22px; height: 22px;
+      border-radius: 50%; font-size: 13px; font-weight: 700;
+      cursor: pointer; display: grid; place-items: center;
+      line-height: 1;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .photo-size-warn {
+      font-size: 11px; color: #d97706; font-weight: 500;
+      background: #fef9c3; border: 1px solid #fde68a;
+      border-radius: 8px; padding: 6px 10px; margin-bottom: 8px;
+      display: none;
+    }
+    .photo-size-warn.show { display: block; }
+
+    /* Vignettes dans l'historique */
+    .hist-photos {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 8px;
+    }
+    .hist-photo-thumb {
+      width: 58px; height: 58px;
+      border-radius: 8px;
+      object-fit: cover;
+      border: 1.5px solid var(--border);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .hist-photo-thumb:hover {
+      transform: scale(1.06);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Lightbox */
+    #lightbox {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 2000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 16px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .2s;
+    }
+    #lightbox.show { opacity: 1; pointer-events: all; }
+    #lightbox img {
+      max-width: 100%; max-height: 90vh;
+      border-radius: 10px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+      transform: scale(.94);
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+    }
+    #lightbox.show img { transform: scale(1); }
+    #lightbox-close {
+      position: absolute; top: 16px; right: 16px;
+      background: rgba(255,255,255,0.15);
+      border: none; color: #fff;
+      width: 40px; height: 40px; border-radius: 50%;
+      font-size: 20px; cursor: pointer;
+      display: grid; place-items: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+    }
+    #lightbox-close:hover { background: rgba(255,255,255,0.28); }
+    #lightbox-counter {
+      position: absolute; bottom: 20px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0,0,0,0.5);
+      color: #fff; font-size: 13px; font-weight: 600;
+      padding: 5px 14px; border-radius: 100px;
+    }
+    #lightbox-prev, #lightbox-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,0.15);
+      border: none; color: #fff;
+      width: 42px; height: 42px; border-radius: 50%;
+      font-size: 20px; cursor: pointer;
+      display: grid; place-items: center;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .15s;
+    }
+    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(255,255,255,0.28); }
+    #lightbox-prev { left: 12px; }
+    #lightbox-next { right: 12px; }
+
     /* ── Toast ── */
     #toast {
       position: fixed; bottom: 24px; left: 50%;
@@ -668,7 +799,7 @@
     </div>
     <div class="header-titles">
       <h1>Déclaration d'anomalie</h1>
-      <p>Rassemblement de kit <span class="version-badge">v1.1</span></p>
+      <p>Rassemblement de kit <span class="version-badge">v1.2</span></p>
     </div>
     <div class="header-right">
       <div class="user-chip" id="user-chip" title="Utilisateur connecté">
@@ -865,6 +996,11 @@ let stepHistory   = [];
 let collected     = {};
 let breadcrumb    = [];
 let toastTimer    = null;
+let pendingPhotos = []; // { base64, size } — photos en attente avant enregistrement
+
+const MAX_PHOTOS   = 4;
+const MAX_PX       = 900;   // largeur/hauteur max après compression
+const JPEG_QUALITY = 0.72;  // qualité JPEG
 
 const ESTIMATED_MAX = 9;
 
@@ -1063,6 +1199,24 @@ function renderSummary() {
          </div>`
       ).join("")}
     </div>` : ""}
+
+    <!-- ── Section photos ── -->
+    <div class="summary-table" style="margin-bottom:14px">
+      <div class="summary-header">📷 Photos (optionnel · max ${MAX_PHOTOS})</div>
+      <div style="padding:14px 16px">
+        <div class="photo-size-warn" id="photo-warn">
+          ⚠ Une ou plusieurs photos dépassent 200 Ko après compression. Elles seront tout de même enregistrées.
+        </div>
+        <div class="photo-grid" id="photo-preview-grid"></div>
+        <div class="photo-zone" id="photo-add-zone" onclick="triggerPhotoInput()"
+             style="display:${pendingPhotos.length >= MAX_PHOTOS ? 'none' : 'block'}">
+          <div class="photo-zone-icon">📷</div>
+          <div class="photo-zone-label">Appuyer pour prendre / importer une photo</div>
+          <div class="photo-zone-sub">JPEG · PNG · max ${MAX_PHOTOS} photos</div>
+        </div>
+      </div>
+    </div>
+
     <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
       <button class="btn btn-back" style="flex:0 0 auto" onclick="restart()">↺ Recommencer</button>
       <button class="btn-submit-main" id="save-btn" onclick="saveAnomaly()"
@@ -1074,6 +1228,8 @@ function renderSummary() {
       <p>La déclaration a été sauvegardée avec succès.</p>
       <button class="btn-new" onclick="restart()">+ Nouvelle déclaration</button>
     </div>`;
+
+  renderPhotoPreview();
 }
 
 /* ── Enregistrement Firebase ── */
@@ -1384,6 +1540,19 @@ function restart() {
       <button class="btn-confirm-delete" id="confirm-ok-btn">Supprimer</button>
     </div>
   </div>
+</div>
+
+<!-- Input fichier caché (photo) -->
+<input type="file" id="photo-input" accept="image/*" multiple style="display:none"
+       onchange="handlePhotoInput(event)" />
+
+<!-- Lightbox -->
+<div id="lightbox" onclick="handleLightboxClick(event)">
+  <button id="lightbox-close" onclick="closeLightbox()">✕</button>
+  <button id="lightbox-prev" onclick="lightboxNav(-1)">‹</button>
+  <img id="lightbox-img" src="" alt="Photo anomalie" />
+  <button id="lightbox-next" onclick="lightboxNav(+1)">›</button>
+  <div id="lightbox-counter"></div>
 </div>
 
 <div id="toast"></div>
