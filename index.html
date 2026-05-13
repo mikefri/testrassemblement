@@ -638,7 +638,7 @@ document.addEventListener("keydown", e => {
 // stepHistory   : pile pour le bouton Retour
 // collected     : valeurs saisies par l'utilisateur
 // breadcrumb    : libellés des choix effectués (affiché en haut)
-let currentStepId = TREE.start;
+let currentStepId = null; // sera initialisé dans restart(), après le chargement de tree.json
 let stepHistory   = [];
 let collected     = {};
 let breadcrumb    = [];
