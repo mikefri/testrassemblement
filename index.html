@@ -531,183 +531,11 @@
 
 <script>
 /* ════════════════════════════════════════════════════════════
-   ARBORESCENCE — à modifier ici pour faire évoluer l'appli
-   ════════════════════════════════════════════════════════════
-   Chaque nœud a un identifiant unique (clé dans "nodes").
-   Le champ "next" d'un nœud (ou d'une option) est simplement
-   l'identifiant du nœud suivant. null = fin de parcours → récap.
+   ARBORESCENCE — définie uniquement dans tree.json
+   Le HTML ne contient plus aucune logique métier.
+   Pour faire évoluer l'appli, modifiez seulement tree.json.
    ════════════════════════════════════════════════════════════ */
-const TREE = {
-  "start": "root",
-  "nodes": {
-
-    "root": {
-      "type": "select",
-      "tag": "Catégorie",
-      "question": "Quel type d'anomalie souhaitez-vous déclarer ?",
-      "options": [
-        { "label": "Contenant", "next": "contenant_fields" },
-        { "label": "Flux",      "next": "flux_type"        },
-        { "label": "Logiciel",  "next": "logiciel_type"    }
-      ]
-    },
-
-    "contenant_fields": {
-      "type": "fields",
-      "tag": "Identification",
-      "question": "Identification du matériel concerné",
-      "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
-        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47",          "required": true },
-        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
-      ],
-      "next": "contenant_soustype"
-    },
-
-    "contenant_soustype": {
-      "type": "select",
-      "tag": "Contenant – Sous-catégorie",
-      "question": "Nature du problème contenant ?",
-      "options": [
-        { "label": "Logique / Physique", "next": "logphys_type" },
-        { "label": "Physique",           "next": "phys_type"    }
-      ]
-    },
-
-    "logphys_type": {
-      "type": "select",
-      "tag": "Contenant – Logique / Physique",
-      "question": "Type de problème logique/physique ?",
-      "options": [
-        { "label": "Type de contenant non adapté", "next": "taille" }
-      ]
-    },
-
-    "taille": {
-      "type": "select",
-      "tag": "Taille",
-      "question": "Le contenant est-il…",
-      "options": [
-        { "label": "Trop grand", "next": "preco" },
-        { "label": "Trop petit", "next": "preco" }
-      ]
-    },
-
-    "preco": {
-      "type": "text",
-      "tag": "Préconisation",
-      "question": "Quelle est la préconisation ?",
-      "field": "preco",
-      "placeholder": "Ex : Remplacer par modèle B-23",
-      "required": false,
-      "next": "commentaire"
-    },
-
-    "phys_type": {
-      "type": "select",
-      "tag": "Contenant – Physique",
-      "question": "Type de problème physique ?",
-      "options": [
-        { "label": "Contenant HS", "next": "matiere" }
-      ]
-    },
-
-    "matiere": {
-      "type": "select",
-      "tag": "Matière",
-      "question": "Matière du contenant HS ?",
-      "options": [
-        { "label": "Bois", "next": "reparation" },
-        { "label": "Fer",  "next": "reparation" }
-      ]
-    },
-
-    "reparation": {
-      "type": "select",
-      "tag": "Réparation",
-      "question": "Le contenant peut-il être réparé ?",
-      "options": [
-        { "label": "Oui",              "next": "stockage_hs" },
-        { "label": "Non",              "next": "vm_info"     },
-        { "label": "Je ne sais pas",   "next": "commentaire" }
-      ]
-    },
-
-    "stockage_hs": {
-      "type": "text",
-      "tag": "Stockage HS",
-      "question": "Emplacement de stockage HS ?",
-      "field": "stockage_hs",
-      "placeholder": "Ex : Zone HS – Allée 3, étagère B",
-      "required": true,
-      "next": "commentaire"
-    },
-
-    "vm_info": {
-      "type": "info",
-      "tag": "Action requise",
-      "question": "Orientation du contenant",
-      "message": "Le contenant non réparable sera orienté vers la décheterie.",
-      "next": "commentaire"
-    },
-
-    "flux_type": {
-      "type": "select",
-      "tag": "Flux",
-      "question": "Type de problème flux ?",
-      "options": [
-        { "label": "Appro manquant",              "next": "fields_default" },
-        { "label": "Pièce dep manquante",         "next": "fields_default" },
-        { "label": "Support bloqué sur MAG2EPRE",  "next": "fields_default" },
-        { "label": "Support bloqué sur MAG2SPRE",  "next": "fields_default" }
-      ]
-    },
-
-    "fields_default": {
-      "type": "fields",
-      "tag": "Identification",
-      "question": "Identification du matériel concerné",
-      "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
-        { "key": "kit",     "label": "Kit *",      "placeholder": "Ex : K21ME47",          "required": true },
-        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
-      ],
-      "next": "commentaire"
-    },
-
-    "logiciel_type": {
-      "type": "select",
-      "tag": "Logiciel",
-      "question": "Type de problème logiciel ?",
-      "options": [
-        { "label": "Déclenchement de mouvement HS", "next": "fields_kit_mere" }
-      ]
-    },
-
-    "fields_kit_mere": {
-      "type": "fields",
-      "tag": "Identification – Kit mère",
-      "question": "Identification du kit mère concerné",
-      "fields": [
-        { "key": "support", "label": "Support *",  "placeholder": "Ex : 052000...........", "required": true },
-        { "key": "kit",     "label": "Kit mère *", "placeholder": "Ex : Kit frein 273",    "required": true },
-        { "key": "engin",   "label": "Engin *",    "placeholder": "Ex : TER X73500",        "required": true }
-      ],
-      "next": "commentaire"
-    },
-
-    "commentaire": {
-      "type": "textarea",
-      "tag": "Étape finale",
-      "question": "Un commentaire à ajouter ?",
-      "field": "commentaire",
-      "placeholder": "Description complémentaire, référence, contexte… (optionnel)",
-      "required": false,
-      "next": null
-    }
-
-  }
-};
+let TREE = null; // sera rempli par fetch('./tree.json') au démarrage
 
 /* ════════════════════════════════════════════════════════════
    MOTEUR GÉNÉRIQUE — ne pas modifier sauf pour ajouter
@@ -726,8 +554,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore(), auth = firebase.auth();
 
-/* ── Auth ── */
-auth.onAuthStateChanged(u => u ? showApp(u) : showLogin());
+/* ── Chargement de l'arborescence puis démarrage de l'auth ── */
+fetch('./tree.json')
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+  .then(data => {
+    TREE = data;
+    auth.onAuthStateChanged(u => u ? showApp(u) : showLogin());
+  })
+  .catch(err => {
+    document.body.innerHTML = `
+      <div style="min-height:100vh;display:flex;align-items:center;justify-content:center;
+                  background:#151c2c;font-family:system-ui;text-align:center;padding:24px">
+        <div style="background:#fff;border-radius:16px;padding:32px;max-width:400px">
+          <div style="font-size:40px;margin-bottom:12px">⚠️</div>
+          <h2 style="color:#151c2c;margin-bottom:8px">Impossible de charger tree.json</h2>
+          <p style="color:#6b7280;font-size:14px">Vérifiez que <strong>tree.json</strong>
+          est dans le même dossier que index.html.</p>
+          <p style="color:#dc2626;font-size:12px;margin-top:12px">${err.message}</p>
+        </div>
+      </div>`;
+  });
 
 async function doLogin() {
   const email = document.getElementById("login-email").value.trim();
