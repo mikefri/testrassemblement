@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <title>Déclaration d'anomalie – Rassemblement kit</title>
 
   <!-- PWA Meta Tags -->
@@ -18,6 +17,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
   <style>
     /* ── Tokens ── */
@@ -407,9 +407,96 @@
       font-size: 15px; font-weight: 600; cursor: pointer; font-family: var(--font);
     }
 
-    /* ── History ── */
+    /* ══════════════════════════════════════════
+       HISTORIQUE — FILTRES
+    ══════════════════════════════════════════ */
     .history-wrap { display: none; }
     .history-wrap.show { display: block; }
+
+    /* Barre de filtres */
+    .filter-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .filter-bar-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .filter-title {
+      font-size: 12px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--muted);
+    }
+
+    .filter-count {
+      font-size: 12px; font-weight: 600;
+      background: var(--accent-lt); color: var(--accent);
+      padding: 3px 10px; border-radius: 100px;
+      margin-left: auto;
+    }
+
+    .btn-clear-filters {
+      background: none; border: 1.5px solid var(--border);
+      color: var(--muted); border-radius: 8px;
+      padding: 5px 11px; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: var(--font);
+      transition: border-color .15s, color .15s;
+      white-space: nowrap;
+    }
+    .btn-clear-filters:hover { border-color: var(--accent); color: var(--accent); }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .filter-row.three { grid-template-columns: 1fr 1fr 1fr; }
+
+    .filter-input-wrap { position: relative; }
+    .filter-icon {
+      position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; pointer-events: none; opacity: .5;
+    }
+
+    .filter-input {
+      width: 100%;
+      padding: 9px 11px 9px 32px;
+      border: 1.5px solid var(--border);
+      border-radius: 9px;
+      font-size: 13px; color: #111827;
+      background: var(--bg);
+      outline: none;
+      transition: border-color .15s, background .15s;
+      font-family: var(--font);
+    }
+    .filter-input:focus { border-color: var(--accent); background: #fff; }
+
+    select.filter-input {
+      padding-left: 32px;
+      appearance: none;
+      cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      padding-right: 28px;
+    }
+
+    input[type="date"].filter-input {
+      padding-left: 11px;
+    }
+
+    /* Cards historique */
     .history-item { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); padding: 13px 16px; margin-bottom: 10px; }
     .history-item-top { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
     .hist-badge { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; background: var(--accent-lt); color: var(--accent); text-transform: uppercase; letter-spacing: .05em; }
@@ -419,6 +506,14 @@
     .empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
     .history-item { transition: opacity .25s, transform .25s; }
     .history-item.removing { opacity: 0; transform: translateX(12px); pointer-events: none; }
+
+    /* Surbrillance des termes recherchés */
+    mark {
+      background: #fef08a;
+      color: #854d0e;
+      border-radius: 3px;
+      padding: 0 2px;
+    }
 
     .btn-delete {
       margin-left: auto; flex-shrink: 0;
@@ -517,6 +612,8 @@
       .s-key { min-width: unset; font-size: 11px; }
       .s-val { font-size: 14px; }
       .btn-submit-main { font-size: 16px; }
+      .filter-row { grid-template-columns: 1fr; }
+      .filter-row.three { grid-template-columns: 1fr 1fr; }
     }
 
     @media (min-width: 481px) and (max-width: 768px) {
@@ -571,7 +668,7 @@
     </div>
     <div class="header-titles">
       <h1>Déclaration d'anomalie</h1>
-      <p>Rassemblement de kit <span class="version-badge">v1.0</span></p>
+      <p>Rassemblement de kit <span class="version-badge">v1.1</span></p>
     </div>
     <div class="header-right">
       <div class="user-chip" id="user-chip" title="Utilisateur connecté">
@@ -593,19 +690,64 @@
       <div id="step-container"></div>
     </div>
 
+    <!-- ══ HISTORIQUE ══ -->
     <div class="history-wrap" id="history-view">
-      <div class="card" style="margin-bottom:0">
-        <div class="step-tag">Historique</div>
-        <div class="step-question" style="font-size:17px; margin-bottom:16px;">Anomalies déclarées</div>
-        <div id="history-list"><p class="empty-state" style="padding:20px 0">Chargement…</p></div>
+
+      <!-- Barre de filtres -->
+      <div class="filter-bar">
+        <div class="filter-bar-top">
+          <span class="filter-title">🔍 Filtres</span>
+          <span class="filter-count" id="filter-count">— entrées</span>
+          <button class="btn-clear-filters" onclick="clearFilters()">✕ Réinitialiser</button>
+        </div>
+
+        <!-- Ligne 1 : Recherche texte + Catégorie -->
+        <div class="filter-row">
+          <div class="filter-input-wrap">
+            <span class="filter-icon">🔍</span>
+            <input class="filter-input" id="f-search" type="text"
+                   placeholder="Recherche libre…"
+                   oninput="applyFilters()" />
+          </div>
+          <div class="filter-input-wrap">
+            <span class="filter-icon">🏷</span>
+            <select class="filter-input" id="f-categorie" onchange="applyFilters()">
+              <option value="">Toutes catégories</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Ligne 2 : Date de / Date à / Déclarant -->
+        <div class="filter-row three">
+          <div class="filter-input-wrap">
+            <input class="filter-input" id="f-date-from" type="date"
+                   title="Du" onchange="applyFilters()" />
+          </div>
+          <div class="filter-input-wrap">
+            <input class="filter-input" id="f-date-to" type="date"
+                   title="Au" onchange="applyFilters()" />
+          </div>
+          <div class="filter-input-wrap">
+            <span class="filter-icon">👤</span>
+            <input class="filter-input" id="f-declarant" type="text"
+                   placeholder="Déclarant…"
+                   oninput="applyFilters()" />
+          </div>
+        </div>
       </div>
-      <div class="btn-<div class="btn-row" style="flex-wrap:wrap; gap:8px;">
-  <button class="btn btn-next" onclick="toggleHistory()" style="flex:1; min-width:160px">← Nouvelle déclaration</button>
-  <button class="btn btn-back" onclick="exportCSV()" style="flex:0 0 auto; background:#1d6f42; color:#fff;">⬇ CSV</button>
-  <button class="btn btn-back" onclick="exportXLSX()" style="flex:0 0 auto; background:#217346; color:#fff;">⬇ Excel</button>
-</div>
-row">
-        <button class="btn btn-next" onclick="toggleHistory()">← Nouvelle déclaration</button>
+
+      <!-- Liste -->
+      <div class="card" style="padding:0; overflow:hidden; border:none; background:transparent; box-shadow:none;">
+        <div id="history-list"></div>
+      </div>
+
+      <!-- Boutons bas -->
+      <div class="btn-row" style="flex-wrap:wrap; gap:8px;">
+        <button class="btn btn-next" onclick="toggleHistory()" style="flex:1; min-width:160px">← Nouvelle déclaration</button>
+        <button class="btn btn-back" onclick="exportCSV()"
+                style="flex:0 0 auto; background:#1d6f42; color:#fff; border:none;">⬇ CSV</button>
+        <button class="btn btn-back" onclick="exportXLSX()"
+                style="flex:0 0 auto; background:#217346; color:#fff; border:none;">⬇ Excel</button>
       </div>
     </div>
   </div>
@@ -614,14 +756,11 @@ row">
 <script>
 /* ════════════════════════════════════════════════════════════
    ARBORESCENCE — définie uniquement dans tree.json
-   Le HTML ne contient plus aucune logique métier.
-   Pour faire évoluer l'appli, modifiez seulement tree.json.
    ════════════════════════════════════════════════════════════ */
-let TREE = null; // sera rempli par fetch('./tree.json') au démarrage
+let TREE = null;
 
 /* ════════════════════════════════════════════════════════════
-   MOTEUR GÉNÉRIQUE — ne pas modifier sauf pour ajouter
-   un nouveau type de nœud
+   MOTEUR GÉNÉRIQUE
    ════════════════════════════════════════════════════════════ */
 
 /* ── Firebase ── */
@@ -636,7 +775,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore(), auth = firebase.auth();
 
-/* ── Chargement de l'arborescence puis démarrage de l'auth ── */
+/* ── Chargement de l'arborescence ── */
 fetch('./tree.json')
   .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
   .then(data => {
@@ -709,7 +848,6 @@ function showApp(user) {
   const email = user.email || "";
   document.getElementById("user-avatar").textContent        = email.charAt(0).toUpperCase();
   document.getElementById("user-email-display").textContent = email;
-  // Fermer le modal en cliquant sur le fond (enregistré une seule fois)
   const overlay = document.getElementById("confirm-overlay");
   if (overlay && !overlay.dataset.listenerSet) {
     overlay.addEventListener("click", e => { if (e.target === overlay) closeConfirm(); });
@@ -722,39 +860,31 @@ document.addEventListener("keydown", e => {
 });
 
 /* ── État de navigation ── */
-// currentStepId : identifiant (string) du nœud actif dans TREE.nodes
-// stepHistory   : pile pour le bouton Retour
-// collected     : valeurs saisies par l'utilisateur
-// breadcrumb    : libellés des choix effectués (affiché en haut)
-let currentStepId = null; // sera initialisé dans restart(), après le chargement de tree.json
+let currentStepId = null;
 let stepHistory   = [];
 let collected     = {};
 let breadcrumb    = [];
-let toastTimer    = null; // pour le toast de confirmation
+let toastTimer    = null;
 
-const ESTIMATED_MAX = 9; // pour la barre de progression
+const ESTIMATED_MAX = 9;
 
 /* ── Rendu principal ── */
 function render() {
   const step = TREE.nodes[currentStepId];
 
-  // Barre de progression
   const pct = Math.min(Math.round((stepHistory.length / ESTIMATED_MAX) * 100), 95);
   document.getElementById("progress-bar").style.width    = pct + "%";
   document.getElementById("progress-label").textContent  = "Étape " + (stepHistory.length + 1);
 
-  // Fil d'Ariane
   document.getElementById("breadcrumb").innerHTML = breadcrumb.map((b, i) =>
     (i > 0 ? '<span class="bc-sep">›</span>' : '') +
     `<span class="bc-item">${b}</span>`
   ).join("");
 
-  // Corps de l'étape
   let inner = `<div class="step-tag">${step.tag || ""}</div>
                <div class="step-question">${step.question}</div>`;
 
   if (step.type === "select") {
-    // ── Liste de boutons-options ──
     inner += `<div class="options">${
       step.options.map((o, i) =>
         `<button class="opt-btn" onclick="pickOption(${i})">
@@ -763,15 +893,12 @@ function render() {
          </button>`
       ).join("")
     }</div>`;
-    // Bouton Retour (masqué sur la première étape)
     if (stepHistory.length > 0) {
       inner += `<div class="btn-row">
         <button class="btn btn-back" onclick="goBack()">← Retour</button>
       </div>`;
     }
-
   } else if (step.type === "fields") {
-    // ── Plusieurs champs texte ──
     inner += `<div class="fields">${
       step.fields.map(f =>
         `<div class="field">
@@ -781,16 +908,12 @@ function render() {
          </div>`
       ).join("")
     }</div>` + navButtons("submitFields()");
-
   } else if (step.type === "text") {
-    // ── Un seul champ texte ──
     inner += `<div class="fields"><div class="field">
       <input id="txt_field" placeholder="${step.placeholder}"
              value="${esc(collected[step.field] || "")}" />
     </div></div>` + navButtons("submitText()");
-
   } else if (step.type === "textarea") {
-    // ── Zone de texte libre (commentaire / dernière étape) ──
     const isLast  = step.next === null;
     const btnLabel = isLast ? "📋 Voir le récapitulatif" : "Suivant →";
     inner += `<div class="fields"><div class="field">
@@ -798,9 +921,7 @@ function render() {
         esc(collected[step.field || "commentaire"] || "")
       }</textarea>
     </div></div>` + navButtons("submitTextarea()", btnLabel);
-
   } else if (step.type === "info") {
-    // ── Bannière d'information (pas de saisie) ──
     inner += `<div class="info-banner">${step.message}</div>` +
              navButtons("advanceStep()");
   }
@@ -809,7 +930,6 @@ function render() {
     `<div class="card">${inner}</div>`;
 }
 
-/* Génère les boutons Retour / Suivant */
 function navButtons(onNext, nextLabel = "Suivant →") {
   const back = stepHistory.length > 0
     ? `<button class="btn btn-back" onclick="goBack()">← Retour</button>`
@@ -825,20 +945,16 @@ function esc(s) {
 }
 
 /* ── Navigation ── */
-
-// L'utilisateur clique sur une option d'un nœud "select"
 function pickOption(i) {
   const step = TREE.nodes[currentStepId];
   const opt  = step.options[i];
   pushHistory();
   breadcrumb.push(opt.label);
-  // On mémorise le choix sous la clé "nX" (pour le récapitulatif)
   collected["n" + stepHistory.length] = opt.label;
   currentStepId = opt.next;
   render();
 }
 
-// Valider un nœud "fields" (plusieurs champs)
 function submitFields() {
   const step = TREE.nodes[currentStepId];
   let ok = true;
@@ -854,7 +970,6 @@ function submitFields() {
   render();
 }
 
-// Valider un nœud "text" (un seul champ)
 function submitText() {
   const step = TREE.nodes[currentStepId];
   const val  = document.getElementById("txt_field").value.trim();
@@ -865,20 +980,18 @@ function submitText() {
   render();
 }
 
-// Valider un nœud "textarea" (commentaire)
 function submitTextarea() {
   const step = TREE.nodes[currentStepId];
   collected[step.field || "commentaire"] = document.getElementById("ta_field").value.trim();
   pushHistory();
   if (step.next === null) {
-    renderSummary(); // fin de parcours → récapitulatif
+    renderSummary();
   } else {
     currentStepId = step.next;
     render();
   }
 }
 
-// Avancer depuis un nœud "info" (pas de saisie)
 function advanceStep() {
   const step = TREE.nodes[currentStepId];
   pushHistory();
@@ -886,7 +999,6 @@ function advanceStep() {
   render();
 }
 
-// Retour à l'étape précédente
 function goBack() {
   if (!stepHistory.length) return;
   const prev    = stepHistory.pop();
@@ -896,7 +1008,6 @@ function goBack() {
   render();
 }
 
-// Empile l'état courant avant de changer d'étape
 function pushHistory() {
   stepHistory.push({
     stepId:     currentStepId,
@@ -919,13 +1030,11 @@ function renderSummary() {
   document.getElementById("progress-bar").style.width    = "100%";
   document.getElementById("progress-label").textContent  = "Récapitulatif";
 
-  // Chemin de décision : toutes les clés "nX"
   const path = [];
   for (let i = 1; ; i++) {
     if (collected["n" + i]) path.push(collected["n" + i]); else break;
   }
 
-  // Données saisies : tout sauf les clés "nX"
   const extras = Object.entries(collected)
     .filter(([k]) => !k.startsWith("n"))
     .map(([k, v]) => ({ key: LABEL_MAP[k] || k, val: v || "—" }));
@@ -1005,51 +1114,137 @@ async function saveAnomaly() {
   }
 }
 
-/* ── Historique ── */
+/* ════════════════════════════════════════════════════════════
+   HISTORIQUE — avec filtres + recherche
+   ════════════════════════════════════════════════════════════ */
 let historyVisible = false;
+let allDocs        = []; // cache de tous les documents chargés
+
 function toggleHistory() {
   historyVisible = !historyVisible;
   document.getElementById("form-view").style.display = historyVisible ? "none" : "block";
   document.getElementById("history-view").classList.toggle("show", historyVisible);
   if (historyVisible) loadHistory();
 }
+
 async function loadHistory() {
   const list = document.getElementById("history-list");
   list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Chargement…</p>";
   try {
-    const snap = await db.collection("anomalies").orderBy("ts","desc").limit(50).get();
-    if (snap.empty) {
-      list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Aucune anomalie déclarée.</p>";
-      return;
-    }
-    list.innerHTML = snap.docs.map(doc => {
-      const d  = doc.data();
-      const dt = d.date ? new Date(d.date).toLocaleString("fr-FR") : "—";
-      const infos = [d.support, d.kit, d.engin].filter(Boolean).join(" · ");
-      const dec   = d.declarant_email ? `<span style="opacity:.7">· ${d.declarant_email}</span>` : "";
-      return `<div class="history-item" id="item-${doc.id}">
-        <div class="history-item-top">
-          <span class="hist-badge">${d.categorie || "—"}</span>
-          <span class="hist-date">${dt} ${dec}</span>
-          <button class="btn-delete" onclick="deleteAnomaly('${doc.id}')">🗑 Supprimer</button>
-        </div>
-        <div class="hist-path">${(d.chemin || []).join(" › ")}</div>
-        ${infos ? `<div class="hist-fields">${infos}</div>` : ""}
-        ${d.commentaire ? `<div class="hist-fields" style="margin-top:4px;font-style:italic">"${d.commentaire}"</div>` : ""}
-      </div>`;
-    }).join("");
+    const snap = await db.collection("anomalies").orderBy("ts","desc").limit(200).get();
+    allDocs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    populateCategoryFilter();
+    applyFilters();
   } catch(err) {
     list.innerHTML = `<p class="empty-state" style="color:#dc2626">Erreur : ${err.message}</p>`;
   }
+}
+
+/* Remplit le <select> catégorie avec les valeurs uniques */
+function populateCategoryFilter() {
+  const sel  = document.getElementById("f-categorie");
+  const cats = [...new Set(allDocs.map(d => d.categorie).filter(Boolean))].sort();
+  // Conserver l'option "Toutes"
+  sel.innerHTML = `<option value="">Toutes catégories</option>` +
+    cats.map(c => `<option value="${esc(c)}">${c}</option>`).join("");
+}
+
+/* Applique tous les filtres actifs et re-rend la liste */
+function applyFilters() {
+  const search    = document.getElementById("f-search").value.trim().toLowerCase();
+  const categorie = document.getElementById("f-categorie").value;
+  const dateFrom  = document.getElementById("f-date-from").value;  // "YYYY-MM-DD"
+  const dateTo    = document.getElementById("f-date-to").value;
+  const declarant = document.getElementById("f-declarant").value.trim().toLowerCase();
+
+  const filtered = allDocs.filter(d => {
+    // Catégorie
+    if (categorie && d.categorie !== categorie) return false;
+
+    // Plage de dates
+    if (d.date) {
+      const docDate = d.date.slice(0, 10); // "YYYY-MM-DD"
+      if (dateFrom && docDate < dateFrom)  return false;
+      if (dateTo   && docDate > dateTo)    return false;
+    }
+
+    // Déclarant
+    if (declarant && !(d.declarant_email || "").toLowerCase().includes(declarant)) return false;
+
+    // Recherche texte libre (chemin, champs, commentaire)
+    if (search) {
+      const haystack = [
+        ...(d.chemin || []),
+        d.support, d.kit, d.engin,
+        d.commentaire, d.preco, d.stockage_hs,
+        d.declarant_email
+      ].filter(Boolean).join(" ").toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
+
+    return true;
+  });
+
+  document.getElementById("filter-count").textContent =
+    filtered.length + " / " + allDocs.length + " entrée" + (allDocs.length > 1 ? "s" : "");
+
+  renderHistoryItems(filtered, search);
+}
+
+/* Réinitialise tous les filtres */
+function clearFilters() {
+  document.getElementById("f-search").value    = "";
+  document.getElementById("f-categorie").value = "";
+  document.getElementById("f-date-from").value = "";
+  document.getElementById("f-date-to").value   = "";
+  document.getElementById("f-declarant").value = "";
+  applyFilters();
+}
+
+/* Surligne les occurrences d'un terme dans une chaîne */
+function highlight(text, term) {
+  if (!term || !text) return text || "";
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return String(text).replace(new RegExp(escaped, "gi"),
+    m => `<mark>${m}</mark>`);
+}
+
+/* Rendu de la liste filtrée */
+function renderHistoryItems(docs, searchTerm) {
+  const list = document.getElementById("history-list");
+  if (!docs.length) {
+    list.innerHTML = "<p class='empty-state' style='padding:30px 0'>Aucun résultat pour ces filtres.</p>";
+    return;
+  }
+  list.innerHTML = docs.map(d => {
+    const dt    = d.date ? new Date(d.date).toLocaleString("fr-FR") : "—";
+    const infos = [d.support, d.kit, d.engin].filter(Boolean).join(" · ");
+    const dec   = d.declarant_email
+      ? `<span style="opacity:.7">· ${highlight(d.declarant_email, searchTerm)}</span>`
+      : "";
+    const cheminHL = (d.chemin || []).map(c => highlight(c, searchTerm)).join(" › ");
+    const infosHL  = [d.support, d.kit, d.engin].filter(Boolean)
+                      .map(v => highlight(v, searchTerm)).join(" · ");
+    const commentHL = d.commentaire ? highlight(d.commentaire, searchTerm) : "";
+
+    return `<div class="history-item" id="item-${d.id}">
+      <div class="history-item-top">
+        <span class="hist-badge">${highlight(d.categorie || "—", searchTerm)}</span>
+        <span class="hist-date">${dt} ${dec}</span>
+        <button class="btn-delete" onclick="deleteAnomaly('${d.id}')">🗑 Supprimer</button>
+      </div>
+      <div class="hist-path">${cheminHL}</div>
+      ${infosHL  ? `<div class="hist-fields">${infosHL}</div>` : ""}
+      ${commentHL ? `<div class="hist-fields" style="margin-top:4px;font-style:italic">"${commentHL}"</div>` : ""}
+    </div>`;
+  }).join("");
 }
 
 /* ── Suppression d'une anomalie ── */
 function deleteAnomaly(docId) {
   const overlay = document.getElementById("confirm-overlay");
   const okBtn   = document.getElementById("confirm-ok-btn");
-  // Ouvrir le modal
   overlay.classList.add("show");
-  // Cloner le bouton pour supprimer l'ancien listener
   const fresh = okBtn.cloneNode(true);
   okBtn.replaceWith(fresh);
   fresh.onclick = async () => {
@@ -1058,13 +1253,13 @@ function deleteAnomaly(docId) {
     if (item) item.classList.add("removing");
     try {
       await db.collection("anomalies").doc(docId).delete();
-      setTimeout(() => { if (item) item.remove(); }, 280);
-      showToast("✅ Anomalie supprimée");
+      // Retirer du cache local
+      allDocs = allDocs.filter(d => d.id !== docId);
       setTimeout(() => {
-        const list = document.getElementById("history-list");
-        if (list && list.querySelectorAll(".history-item").length === 0)
-          list.innerHTML = "<p class='empty-state' style='padding:20px 0'>Aucune anomalie déclarée.</p>";
-      }, 350);
+        if (item) item.remove();
+        applyFilters(); // recalcule le compteur
+      }, 280);
+      showToast("✅ Anomalie supprimée");
     } catch(err) {
       if (item) item.classList.remove("removing");
       showToast("❌ Erreur : " + err.message);
@@ -1082,50 +1277,43 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove("show"), 3000);
 }
 
-/* ── Réinitialisation ── */
-function restart() {
-  currentStepId  = TREE.start;
-  stepHistory    = [];
-  collected      = {};
-  breadcrumb     = [];
-  historyVisible = false;
-  document.getElementById("form-view").style.display = "block";
-  document.getElementById("history-view").classList.remove("show");
-  render();
-}
+/* ════════════════════════════════════════════════════════════
+   EXPORT CSV / EXCEL
+   ════════════════════════════════════════════════════════════ */
 
-/* ── Export ── */
-async function fetchAllForExport() {
-  const snap = await db.collection("anomalies").orderBy("ts","desc").get();
-  return snap.docs.map(doc => {
-    const d = doc.data();
-    return {
-      "Date":           d.date ? new Date(d.date).toLocaleString("fr-FR") : "",
-      "Catégorie":      d.categorie      || "",
-      "Chemin complet": (d.chemin||[]).join(" › "),
-      "Support":        d.support        || "",
-      "Kit":            d.kit            || "",
-      "Engin":          d.engin          || "",
-      "Commentaire":    d.commentaire    || "",
-      "Préconisation":  d.preco          || "",
-      "Stockage HS":    d.stockage_hs    || "",
-      "Déclarant":      d.declarant_email|| "",
-    };
-  });
+/* Construit les lignes d'export depuis allDocs (ou Firebase si vide) */
+async function getExportRows() {
+  let docs = allDocs;
+  if (!docs.length) {
+    const snap = await db.collection("anomalies").orderBy("ts","desc").get();
+    docs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  }
+  return docs.map(d => ({
+    "Date":           d.date ? new Date(d.date).toLocaleString("fr-FR") : "",
+    "Catégorie":      d.categorie      || "",
+    "Chemin complet": (d.chemin||[]).join(" › "),
+    "Support":        d.support        || "",
+    "Kit":            d.kit            || "",
+    "Engin":          d.engin          || "",
+    "Commentaire":    d.commentaire    || "",
+    "Préconisation":  d.preco          || "",
+    "Stockage HS":    d.stockage_hs    || "",
+    "Déclarant":      d.declarant_email|| "",
+  }));
 }
 
 async function exportCSV() {
   showToast("⏳ Préparation du CSV…");
   try {
-    const rows = await fetchAllForExport();
+    const rows = await getExportRows();
     if (!rows.length) { showToast("⚠ Aucune anomalie à exporter"); return; }
     const headers = Object.keys(rows[0]);
-    const escape  = v => `"${String(v).replace(/"/g,'""')}"`;
+    const escCSV  = v => `"${String(v).replace(/"/g,'""')}"`;
     const lines   = [
-      headers.map(escape).join(";"),
-      ...rows.map(r => headers.map(h => escape(r[h])).join(";"))
+      headers.map(escCSV).join(";"),
+      ...rows.map(r => headers.map(h => escCSV(r[h])).join(";"))
     ];
-    const bom  = "\uFEFF"; // BOM UTF-8 pour Excel FR
+    const bom  = "\uFEFF";
     const blob = new Blob([bom + lines.join("\r\n")], { type: "text/csv;charset=utf-8;" });
     triggerDownload(blob, "anomalies_" + dateStamp() + ".csv");
     showToast("✅ CSV téléchargé (" + rows.length + " lignes)");
@@ -1135,10 +1323,9 @@ async function exportCSV() {
 async function exportXLSX() {
   showToast("⏳ Préparation du fichier Excel…");
   try {
-    const rows = await fetchAllForExport();
+    const rows = await getExportRows();
     if (!rows.length) { showToast("⚠ Aucune anomalie à exporter"); return; }
-    const ws   = XLSX.utils.json_to_sheet(rows);
-    // Largeurs de colonnes
+    const ws = XLSX.utils.json_to_sheet(rows);
     ws["!cols"] = [
       {wch:18},{wch:18},{wch:50},{wch:16},{wch:14},{wch:14},
       {wch:35},{wch:35},{wch:20},{wch:28}
@@ -1160,11 +1347,20 @@ function triggerDownload(blob, filename) {
 }
 
 function dateStamp() {
-  return new Date().toISOString().slice(0,10); // ex: 2025-05-13
+  return new Date().toISOString().slice(0,10);
 }
 
-
-  
+/* ── Réinitialisation ── */
+function restart() {
+  currentStepId  = TREE.start;
+  stepHistory    = [];
+  collected      = {};
+  breadcrumb     = [];
+  historyVisible = false;
+  document.getElementById("form-view").style.display = "block";
+  document.getElementById("history-view").classList.remove("show");
+  render();
+}
 </script>
 
 <script>
@@ -1176,6 +1372,7 @@ function dateStamp() {
     });
   }
 </script>
+
 <!-- Modal de confirmation suppression -->
 <div id="confirm-overlay">
   <div id="confirm-box">
