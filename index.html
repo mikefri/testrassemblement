@@ -1047,10 +1047,28 @@ function restart() {
 
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
+    window.addEventListener('load', () => {
+
+      // Écoute les messages du SW (reçoit la version)
+      navigator.serviceWorker.addEventListener('message', event => {
+        if (event.data && event.data.type === 'VERSION') {
+          // Met à jour tous les badges de version dans la page
+          document.querySelectorAll('.version-badge').forEach(el => {
+            el.textContent = 'v' + event.data.version;
+          });
+          console.log('[PWA] Version :', event.data.version);
+        }
+      });
+
       navigator.serviceWorker.register('./sw.js')
-        .then(function(reg){ console.log('[PWA] SW enregistré:', reg.scope); })
-        .catch(function(err){ console.error('[PWA] Erreur SW:', err); });
+        .then(reg => {
+          console.log('[PWA] SW enregistré :', reg.scope);
+          // Demande la version dès que le SW est actif
+          navigator.serviceWorker.ready.then(registration => {
+            registration.active.postMessage({ type: 'GET_VERSION' });
+          });
+        })
+        .catch(err => console.error('[PWA] Erreur SW :', err));
     });
   }
 </script>
