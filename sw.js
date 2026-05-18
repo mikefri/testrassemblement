@@ -1,5 +1,5 @@
 // ─── VERSION : à changer ici uniquement ───────────────────
-const VERSION    = '1.4';
+const VERSION    = '1.5';
 const CACHE_NAME = 'anomalies-kit-v' + VERSION;
 // ──────────────────────────────────────────────────────────
 
